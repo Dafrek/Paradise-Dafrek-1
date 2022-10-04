@@ -3,11 +3,13 @@
 	block_chance = 50
 	armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 0, BOMB = 30, BIO = 0, RAD = 0, FIRE = 80, ACID = 70)
 
-/obj/item/shield/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/shield/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, checkpass = null)
 	if(attack_type == THROWN_PROJECTILE_ATTACK)
 		final_block_chance += 30
 	if(attack_type == LEAP_ATTACK)
 		final_block_chance = 100
+	if(hitby.checkpass(PASSGLASS))
+		final_block_chance = 0
 	return ..()
 
 /obj/item/shield/riot
