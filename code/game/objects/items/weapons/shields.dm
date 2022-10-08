@@ -3,13 +3,11 @@
 	block_chance = 50
 	armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 0, BOMB = 30, BIO = 0, RAD = 0, FIRE = 80, ACID = 70)
 
-/obj/item/shield/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, checkpass = null)
+/obj/item/shield/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
 	if(attack_type == THROWN_PROJECTILE_ATTACK)
 		final_block_chance += 30
 	if(attack_type == LEAP_ATTACK)
 		final_block_chance = 100
-	if(hitby.checkpass(PASSGLASS))
-		final_block_chance = 0
 	return ..()
 
 /obj/item/shield/riot
@@ -26,6 +24,11 @@
 	origin_tech = "materials=3;combat=4"
 	attack_verb = list("shoved", "bashed")
 	var/cooldown = 0 //shield bash cooldown. based on world.time
+
+/obj/item/shield/riot/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, checkpass = PASSTABLE)
+	if(hitby.checkpass(PASSGLASS))
+		final_block_chance = 0
+	return ..()
 
 /obj/item/shield/riot/attackby(obj/item/W as obj, mob/user as mob, params)
 	if(istype(W, /obj/item/melee/baton))
